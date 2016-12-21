@@ -1,0 +1,204 @@
+#include "network.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+Network::Network() {
+
+}
+
+Network::~Network(){};
+
+int Network::read_friends(const char *filename)
+{
+  ifstream inFile(filename);
+  if(inFile.fail()){
+    cout << "Invalid file" << endl;
+    return -1;
+  }//if
+
+  int total;
+  inFile >> total;
+
+       for(int i = 0; i < total; i++)
+       {
+         int id;
+         string first_name;
+         string last_name;
+         string name;
+         int year;
+         int zip;
+         vector<int> fri;
+        
+         inFile >> id;
+
+          inFile >> first_name; 
+          inFile >> last_name; 
+          name = first_name + " " + last_name;
+
+          inFile >> year;
+          inFile >> zip; 
+
+          string junk;  //get rid of \n
+          getline(inFile, junk);
+
+          string myline;
+          
+          getline(inFile, myline);
+           
+          stringstream ss(myline);
+          int buff =0;
+          User u(name, id, year, zip);
+
+          while(ss >> buff){
+             u.add_friend(buff);
+          }//while
+          users.push_back(u);
+
+      }//for
+
+inFile.close();
+
+return 0;
+}//read_friend
+
+
+int Network::write_friends(const char *filename){
+
+   ofstream outFile(filename);
+
+   if(outFile.fail()){
+    cout << "Invalid file" << endl;
+    return -1;
+     }//if
+
+   outFile << users.size() << endl;
+
+   for(int i=0; i < users.size(); i++){
+      
+      outFile << users[i].id_num() << endl;
+      outFile << '\t' << users[i].name_full() << endl;
+      outFile << '\t' << users[i].year_born() << endl;
+      outFile << '\t' << users[i].zipcode() << endl;
+      outFile << '\t';
+      for(int j=0; j < (users[i].getFriends()).size(); j++){
+      outFile << users[i].getFriends()[j] << " ";
+      }
+      outFile << endl;
+   };
+   outFile.close();
+
+   return 0;
+}//
+
+
+void Network::add_user(string username, int yr, int zipcode)
+{
+   int id_next = users.size();
+
+   User add(username, id_next, yr, zipcode); 
+   users.push_back(add);
+}
+
+
+
+int Network::add_connection(string name1, string name2){
+
+   for(int i=0; i < users.size(); i++){
+      for(int j=0; j < users.size(); j++){
+         if(users[i].name_full() == name1){
+            if(users[j].name_full() == name2){
+
+            users[i].add_friend(users[j].id_num());
+            users[j].add_friend(users[i].id_num());
+
+            return 0;
+            }//if
+         }//if
+      }//for
+   }//for
+
+   return -1;
+}//int
+
+int Network::remove_connection(string name1, string name2){
+
+   for(int i=0; i < users.size(); i++){
+      for(int j=0; j < users.size(); j++)
+      {
+         if(users[i].name_full() == name1){
+            if(users[j].name_full() == name2){
+
+            users[i].delete_friend(users[j].id_num());
+            users[j].delete_friend(users[i].id_num());
+
+            return 0; 
+            }//if
+         }//if
+      }
+   }
+
+   return -1;
+}//int
+
+
+int Network::get_id(string username)
+//accept a user name and return the corresponding id. 
+{
+   for(int i=0; i < users.size(); i++)
+   {
+      if(users[i].name_full() == username){
+         return users[i].id_num();
+      }
+   }
+
+   return -1;
+}
+
+void Network::print_users(){
+
+   cout << "ID" << '\t' << "Name" 
+   << '\t' << '\t' << "Year" << '\t' << "Zip" << endl;
+   cout << "================================================================="<< endl;
+   for(int i=0; i < users.size(); i++){
+      cout << i << ".";
+      cout << '\t';
+      cout << users[i].name_full();
+      cout << '\t';
+      cout << users[i].year_born();
+      cout << '\t';
+      cout << users[i].zipcode() << endl;
+   }//for
+}//void
+
+
+void Network::print_friends(string call_friend){
+   int userid = get_id(call_friend);
+   if(userid ==-1)
+   {
+      return ;
+   }
+
+   vector<int> friendlist = users[userid].getFriends();
+
+   cout << "ID" << '\t' << "Name" << '\t' << '\t' << "Year" << '\t' << "Zip" << endl;
+   cout << "================================================================="<< endl;
+   for(int i=0; i < friendlist.size(); i++){
+            cout << users[friendlist[i]].id_num()<< ".";
+            cout << '\t';
+            cout << users[friendlist[i]].name_full();
+            cout << '\t';
+            cout << users[friendlist[i]].year_born();
+            cout << '\t';
+            cout << users[friendlist[i]].zipcode() << endl;
+   }//if
+   
+}//void
+
+vector<User> * Network::getUsers() {
+   return &users;
+}

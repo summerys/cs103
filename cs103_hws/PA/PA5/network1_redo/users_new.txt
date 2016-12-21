@@ -1,0 +1,25 @@
+6
+0
+	Mark Redekopp
+	1978
+	90018
+	1	2	31
+	Juju Smith
+	1995
+	90271
+	0	22
+	Tommy Trojan
+	1885
+	90089
+	0	13
+	Max Nikias
+	1945
+	91103
+	0	44
+	Jane Doe
+	1988
+	90007
+	35
+	summer seo
+	1991
+	28372

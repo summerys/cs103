@@ -1,0 +1,45 @@
+CSCI 103 Programming Assignment 4, A Mazeing BFS
+
+Name:Summer Yeonhee Seo
+
+Email Address: summerys@usc.edu
+
+: discussion with peers, professor office hour,
+  TA, CP
+=============================== Prelab ==================================
+
+1.
+: make a seperate same size of 2D pointer array that keeps on track
+  if each arraies of maze array was visited or not.  
+  Update the 2D visited pointer array value from 0 to 1 
+  everytime the value of maze array adds to the queue. 
+
+2
+: as soon as data is entered to the Queue contents, visited cell need to 
+  be updated. 
+
+=============================== Review ==================================
+
+1. Describe your "mymaze.txt" test file. It should have multiple paths
+of different distances. When you ran your program on it, did your program 
+behave as expected?
+
+:
+
+============================== Remarks ==================================
+
+Filling in anything here is OPTIONAL.
+
+Approximately how long did you spend on this assignment?
+
+: 
+
+Were there any specific problems you encountered? This is especially 
+useful to know if you turned it in incomplete.
+
+:
+
+Do you have any other remarks?
+
+:while loop to put '*' back to maze did not work well. 
+
